@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         //External_content_Uri: for primary external storage volume
         //public static final class MediaStore.Images.Media
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, GALLERY);
+        startActivityForResult(galleryIntent, GALLERY); //GALLERY parameter is the response Code
     }
 
     private void takePhotoFromCamera() {
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri contentURI = data.getData();
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    String path = saveImage(bitmap);
+
                     Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
                     imageView.setImageBitmap(bitmap);
                 } catch (IOException e) {
@@ -298,13 +298,9 @@ public class MainActivity extends AppCompatActivity {
         try {
             File f = new File(wallpaperDirectory, Calendar.getInstance().getTimeInMillis() + ".jpg");
             f.createNewFile();
-            FileOutputStream fo = new FileOutputStream(f);
-            fo.write(bytes.toByteArray());
-            MediaScannerConnection.scanFile(this,
-                    new String[]{f.getPath()},
-                    new String[]{"image/jpeg"}, null);
-            fo.close();
-            Log.d("TAG", "File Saved::---&gt;" + f.getAbsolutePath());
+            FileOutputStream foutput = new FileOutputStream(f);
+            foutput.write(bytes.toByteArray());
+            foutput.close();
 
             return f.getAbsolutePath();
         } catch (IOException e1) {
